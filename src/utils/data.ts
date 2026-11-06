@@ -1,0 +1,58 @@
+export const data = [
+   {
+      name: "Donald ",
+      img: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/1.jpg",
+      age: 32,
+      status: true,
+      id: "2",
+   },
+   {
+      name: "Samuel Ziemann",
+      img: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/58.jpg",
+      age: 3,
+      status: false,
+      id: "4",
+   },
+   {
+      name: "Natasha Lang",
+      img: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/10.jpg",
+      age: 34,
+      status: false,
+      id: "5",
+   },
+   {
+      name: "Miss Lynette Kozey",
+      img: "https://avatars.githubusercontent.com/u/99967096",
+      age: 85,
+      status: false,
+      id: "6",
+   },
+   {
+      name: "Melvin Douglas",
+      img: "https://avatars.githubusercontent.com/u/46488212",
+      age: 14,
+      status: false,
+      id: "7",
+   },
+   {
+      name: "Marshall Feil",
+      img: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/53.jpg",
+      age: 3,
+      status: false,
+      id: "8",
+   },
+   {
+      name: "Miss Debbie Morar",
+      img: "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/87.jpg",
+      age: 57,
+      status: false,
+      id: "9",
+   },
+   {
+      name: "wd",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPXCe60isFp-ki4sbyq3PZY9DoWh7ElwOPUohAvoRRznbx6JP4UmshP3Y&s=10",
+      age: 22,
+      status: false,
+      id: "11",
+   },
+]

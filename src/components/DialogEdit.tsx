@@ -3,7 +3,6 @@ import type { IData } from "@/store/useZustand"
 import {
    Dialog,
    DialogContent,
-   DialogDescription,
    DialogFooter,
    DialogHeader,
    DialogTitle,
@@ -27,27 +26,22 @@ export function DialogEdit({
       const editobj = {
          id: user.id,
          name: e.target.name.value,
+         img: e.target.img.value,
+         age: e.target.age.value,
+         status: e.target.status.value === "active"
       }
       EditUser(editobj)
       setUser(null)
    }
    if (!user) return null
    return (
-      <Dialog
-         open={Boolean(user)}
-         onOpenChange={(open) => {
-            if (!open) setUser(null)
-         }}
-      >
-         <DialogContent className="w-[calc(100%-2rem)] gap-6 rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-xl sm:max-w-md sm:p-8">
+      <Dialog open={Boolean(user)}>
+         <DialogContent className="max-h-[90vh] w-[calc(100%-2rem)] gap-6 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-xl sm:max-w-md sm:p-8">
             <form onSubmit={edit} className="flex flex-col gap-6">
                <DialogHeader className="gap-2 text-left">
                   <DialogTitle className="text-xl font-semibold tracking-tight text-slate-900">
                      Edit profile
                   </DialogTitle>
-                  <DialogDescription className="text-sm leading-6 text-slate-500">
-                     Make changes to your profile here. Click save when you&apos;re done.
-                  </DialogDescription>
                </DialogHeader>
                <FieldGroup className="gap-4">
                   <Field>
@@ -63,6 +57,26 @@ export function DialogEdit({
                         id="username-1"
                         name="name"
                      />
+                  </Field>
+                  <Field>
+                     <Label htmlFor="edit-img">Image URL</Label>
+                     <Input id="edit-img" name="img" defaultValue={user.img} placeholder="https://..." />
+                  </Field>
+                  <Field>
+                     <Label htmlFor="edit-age">Age</Label>
+                     <Input id="edit-age" name="age" type="number" min="0" defaultValue={user.age} />
+                  </Field>
+                  <Field>
+                     <Label htmlFor="edit-status">Status</Label>
+                     <select
+                        id="edit-status"
+                        name="status"
+                        defaultValue={ user.status ? "active" : "inactive"}
+                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900"
+                     >
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                     </select>
                   </Field>
                </FieldGroup>
                <DialogFooter className="m-0 gap-3 rounded-none border-0 bg-transparent p-0 sm:justify-end">

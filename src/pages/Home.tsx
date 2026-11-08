@@ -35,6 +35,7 @@ export default function Home() {
    }, [getData])
 
 
+   
    return (
       <main className="min-h-screen bg-slate-50 px-4 py-8 text-slate-900 sm:px-8 sm:py-12">
          <section className="mx-auto max-w-6xl space-y-7" aria-label="Users">

@@ -1,12 +1,6 @@
 import { todoZustand } from "@/store/useZustand"
 import type { IData } from "@/store/useZustand"
-import {
-   Dialog,
-   DialogContent,
-   DialogFooter,
-   DialogHeader,
-   DialogTitle,
-} from "./ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Button } from "./ui/button"
 import { Field, FieldGroup } from "./ui/field"
 import { Label } from "./ui/label"
@@ -19,23 +13,27 @@ export function DialogEdit({
    user: IData | null
    setUser: (user: IData | null) => void
 }) {
-   const { EditUser } = todoZustand()
-   function edit(e: any) {
+   const { EditUser, AddImages } = todoZustand()
+   async function edit(e: any) {
       e.preventDefault()
       if (!user) return
       const editobj = {
          id: user.id,
          name: e.target.name.value,
-         img: e.target.img.value,
-         age: e.target.age.value,
-         status: e.target.status.value === "active"
+         description: e.target.description.value,
       }
-      EditUser(editobj)
+      await EditUser(editobj)
+      await AddImages(user.id, e.target.images.files)
       setUser(null)
    }
    if (!user) return null
    return (
-      <Dialog open={Boolean(user)}>
+      <Dialog
+         open={Boolean(user)}
+         onOpenChange={(open) => {
+            if (!open) setUser(null)
+         }}
+      >
          <DialogContent className="max-h-[90vh] w-[calc(100%-2rem)] gap-6 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-xl sm:max-w-md sm:p-8">
             <form onSubmit={edit} className="flex flex-col gap-6">
                <DialogHeader className="gap-2 text-left">
@@ -59,24 +57,16 @@ export function DialogEdit({
                      />
                   </Field>
                   <Field>
-                     <Label htmlFor="edit-img">Image URL</Label>
-                     <Input id="edit-img" name="img" defaultValue={user.img} placeholder="https://..." />
+                     <Label htmlFor="edit-description">Description</Label>
+                     <Input
+                        id="edit-description"
+                        name="description"
+                        defaultValue={user.description}
+                     />
                   </Field>
                   <Field>
-                     <Label htmlFor="edit-age">Age</Label>
-                     <Input id="edit-age" name="age" type="number" min="0" defaultValue={user.age} />
-                  </Field>
-                  <Field>
-                     <Label htmlFor="edit-status">Status</Label>
-                     <select
-                        id="edit-status"
-                        name="status"
-                        defaultValue={ user.status ? "active" : "inactive"}
-                        className="h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900"
-                     >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                     </select>
+                     <Label htmlFor="edit-images">Add images</Label>
+                     <Input id="edit-images" name="images" type="file" multiple />
                   </Field>
                </FieldGroup>
                <DialogFooter className="m-0 gap-3 rounded-none border-0 bg-transparent p-0 sm:justify-end">

@@ -1,5 +1,6 @@
-import { todoZustand } from "@/store/useZustand"
-import type { IData } from "@/store/useZustand"
+import { useSetAtom } from "jotai"
+import { EditUserAtom, AddImagesAtom } from "@/store/todoAtoms"
+import type { IData } from "@/store/todoAtoms"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Button } from "./ui/button"
 import { Field, FieldGroup } from "./ui/field"
@@ -13,7 +14,8 @@ export function DialogEdit({
    user: IData | null
    setUser: (user: IData | null) => void
 }) {
-   const { EditUser, AddImages } = todoZustand()
+   const EditUser = useSetAtom(EditUserAtom)
+   const AddImages = useSetAtom(AddImagesAtom)
    async function edit(e: any) {
       e.preventDefault()
       if (!user) return
@@ -50,18 +52,21 @@ export function DialogEdit({
                         Username
                      </Label>
                      <Input
-                        className="h-11 rounded-lg border-slate-300 bg-white px-3 text-slate-900 focus-visible:border-slate-500 focus-visible:ring-slate-200"
+                        className="h-11 rounded-lg border-slate-300 bg-white px-3 text-slate-900 caret-slate-900 placeholder:text-slate-400 focus-visible:border-slate-500 focus-visible:ring-slate-200"
                         defaultValue={user.name}
                         id="username-1"
                         name="name"
+                        placeholder="Номи корбарро ворид кунед..."
                      />
                   </Field>
                   <Field>
                      <Label htmlFor="edit-description">Description</Label>
                      <Input
+                        className="h-11 rounded-lg border-slate-300 bg-white px-3 text-slate-900 caret-slate-900 placeholder:text-slate-400 focus-visible:border-slate-500 focus-visible:ring-slate-200"
                         id="edit-description"
                         name="description"
                         defaultValue={user.description}
+                        placeholder="Тавсифро ворид кунед..."
                      />
                   </Field>
                   <Field>

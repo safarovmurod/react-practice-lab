@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Plus, Info, Pencil, Trash2 } from "lucide-react"
-import { todoZustand } from "@/store/useZustand"
-import type { IData } from "@/store/useZustand"
+import { useAtomValue, useSetAtom } from "jotai"
+import { dataAtom, DeleteUserAtom, DeleteImageAtom, ChangeStatusAtom } from "@/store/todoAtoms"
+import type { IData } from "@/store/todoAtoms"
 import DialogAdd from "@/components/DialogAdd"
 import DialogEdit from "@/components/DialogEdit"
 import { Button } from "@/components/ui/button"
@@ -28,11 +29,10 @@ export default function Home() {
    const [user, setUser] = useState<IData | null>(null)
    const [info, setInfo] = useState<IData | null>(null)
 
-   const { data, getData, DeleteUser, DeleteImage, ChangeStatus } = todoZustand()
-
-   useEffect(() => {
-      getData()
-   }, [getData])
+   const data = useAtomValue(dataAtom)
+   const DeleteUser = useSetAtom(DeleteUserAtom)
+   const DeleteImage = useSetAtom(DeleteImageAtom)
+   const ChangeStatus = useSetAtom(ChangeStatusAtom)
 
 
    

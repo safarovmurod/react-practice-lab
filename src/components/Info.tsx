@@ -1,4 +1,4 @@
-import type { IData } from "@/store/useZustand"
+import type { IData } from "@/store/todoAtoms"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {

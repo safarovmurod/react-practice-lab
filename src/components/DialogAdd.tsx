@@ -1,4 +1,5 @@
-import { todoZustand } from "@/store/useZustand"
+import { useSetAtom } from "jotai"
+import { PostUserAtom } from "@/store/todoAtoms"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Button } from "./ui/button"
 import { Field, FieldGroup } from "./ui/field"
@@ -13,7 +14,7 @@ export function DialogAdd({
    addUser: boolean
    setAddUser: (open: boolean) => void
 }) {
-   const { PostUser } = todoZustand()
+   const PostUser = useSetAtom(PostUserAtom)
    async function add(e: any) {
       e.preventDefault()
       let formdata = new FormData()
@@ -38,15 +39,22 @@ export function DialogAdd({
                <FieldGroup className="gap-4">
                   <Field>
                      <Label htmlFor="add-name">Name</Label>
-                     <Input id="add-name" name="Name" type="text" />
+                     <Input
+                        className="h-11 rounded-lg border-slate-300 bg-white px-3 text-slate-900 caret-slate-900 placeholder:text-slate-400 focus-visible:border-slate-500 focus-visible:ring-slate-200"
+                        id="add-name"
+                        name="Name"
+                        type="text"
+                        placeholder="Номро ворид кунед..."
+                     />
                   </Field>
                   <Field>
                      <Label htmlFor="add-description">Description</Label>
                      <Input
-                        className="outline-none"
+                        className="h-11 rounded-lg border-slate-300 bg-white px-3 text-slate-900 caret-slate-900 placeholder:text-slate-400 focus-visible:border-slate-500 focus-visible:ring-slate-200"
                         id="add-description"
                         name="Description"
                         type="text"
+                        placeholder="Тавсифро ворид кунед..."
                      />
                   </Field>
                   <Field>

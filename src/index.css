@@ -27,3 +27,20 @@ body {
    color: #0f172a;
    font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Autofill-и Chrome: баҳои кабуди кушод ва матни ноаёнро нест мекунад */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+   -webkit-text-fill-color: #0f172a;
+   caret-color: #0f172a;
+   -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+   transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Интихоби матн ҳамеша намоён */
+::selection {
+   background-color: #bfdbfe;
+   color: #0f172a;
+}

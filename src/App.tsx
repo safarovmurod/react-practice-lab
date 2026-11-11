@@ -1,9 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Layout from "./Layout/Layout"
-import Home from "./pages/Home"
-import { useSelector } from "react-redux"
-import Practika2 from "./pages/Practika2"
-import Practika3 from "./pages/Practika3"
+import Home from "./pages/RedaxToolkit"
+import Practika2 from "./pages/Zustand"
+import RedaxToolkiy from "./pages/RedaxToolkit"
+import Zustand from "./pages/Zustand"
+import Jotai from "./pages/Jotai"
 
 const router = createBrowserRouter([
   {
@@ -12,15 +13,15 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <RedaxToolkiy/>,
       },
       {
-        path: "/pr2",
-        element: <Practika2/>,
+        path: "/zustand",
+        element: <Zustand/>,
       },
       {
-        path: "/pr3",
-        element: <Practika3/>,
+        path: "/jotai",
+        element: <Jotai/>,
       },
     ],
   },

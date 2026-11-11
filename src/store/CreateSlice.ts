@@ -1,4 +1,6 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import { api } from "@/services/api"
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import axios from "axios"
 
 interface Data {
    id: number
@@ -7,39 +9,67 @@ interface Data {
 
 export interface CounterState {
    data: Data[]
+   isloading: boolean
 }
 
 const initialState: CounterState = {
-  data: [
-  { id: 1, name: "Jurabek", age: 22, img: "https://i.pravatar.cc/150?img=11", job: "Frontend Developer" },
-  { id: 2, name: "Murod", age: 24, img: "https://i.pravatar.cc/150?img=12", job: "Backend Developer" },
-  { id: 3, name: "Farid", age: 21, img: "https://i.pravatar.cc/150?img=13", job: "UI/UX Designer" },
-  { id: 4, name: "Madina", age: 23, img: "https://i.pravatar.cc/150?img=44", job: "Project Manager" },
-  { id: 5, name: "Somon", age: 25, img: "https://i.pravatar.cc/150?img=14", job: "Fullstack Developer" },
-  { id: 6, name: "Nigina", age: 20, img: "https://i.pravatar.cc/150?img=45", job: "QA Tester" },
-  { id: 7, name: "Aziz", age: 26, img: "https://i.pravatar.cc/150?img=15", job: "Mobile Developer" },
-  { id: 8, name: "Shabnam", age: 22, img: "https://i.pravatar.cc/150?img=47", job: "Graphic Designer" },
-  { id: 9, name: "Daler", age: 27, img: "https://i.pravatar.cc/150?img=17", job: "DevOps Engineer" },
-  { id: 10, name: "Zarina", age: 24, img: "https://i.pravatar.cc/150?img=49", job: "Data Analyst" },
-],
+   data: [],
+   isloading: false,
 }
 
-export const counterSlice = createSlice({
-   name: "counter",
-   initialState,
-   reducers: {
-      DeleteUser: (state, {payload}) => {
-         state.data = state.data.filter((el) => el.id !== payload)
-      },
-      EditUser: (state, {payload}) => {
-         state.data = state.data.map((el) => el.id === payload.id?payload:el)
-      },
-      AddUser: (state, {payload}) => {
-         state.data = [...state.data,payload]
-      },
+export const getData = createAsyncThunk("todo/getData", async () => {
+   try {
+      const { data } = await axios.get(api)
+      return data
+   } catch (error) {
+      console.error(error)
+      return []
+   }
+})
+export const addUsers = createAsyncThunk("data/addUsers", async (user, { dispatch }) => {
+   try {
+      await axios.post(api, user)
+      dispatch(getData())
+   } catch (error) {
+      console.error(error)
+   }
+})
 
+export let editUser = createAsyncThunk("data/editUser", async (user, { dispatch }) => {
+   try {
+      await axios.put(`${api}/${user.id}`, user)
+      dispatch(getData())
+   } catch (error) {
+      console.log(error)
+   }
+})
+
+export const DeleteData = createAsyncThunk("todo/DeleteData", async (id, { dispatch }) => {
+   try {
+      await axios.delete(`${api}/${id}`)
+      dispatch(getData())
+   } catch (error) {
+      console.error(error)
+   }
+})
+
+export const counterSlice = createSlice({
+   name: "tado",
+   initialState,
+   reducers: {},
+   extraReducers: (builder) => {
+      builder
+         .addCase(getData.pending, (state) => {
+            state.isloading = true
+         })
+         .addCase(getData.fulfilled, (state, { payload }) => {
+            state.isloading = false
+            state.data = payload
+         })
+         .addCase(getData.rejected, (state) => {
+            state.isloading = false
+         })
    },
 })
 
-export const { DeleteUser,EditUser ,AddUser} = counterSlice.actions
 export default counterSlice.reducer

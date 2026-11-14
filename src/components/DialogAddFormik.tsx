@@ -10,82 +10,85 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useZustand } from "@/store/useZustand"
+import type { UserInput } from "@/data/api"
 import { useFormik } from "formik"
 
 type Props = {
    open: boolean
    setOpen: (open: boolean) => void
+   AddData: (user: UserInput) => Promise<void>
 }
 
-export default function DialogAddFormik({ open, setOpen }: Props) {
-   const AddData = useZustand((state) => state.AddData)
-
-   const formik = useFormik({
+export default function DialogAddFormik({ open, setOpen, AddData }: Props) {
+   const { values, handleChange, handleSubmit, isSubmitting } = useFormik({
       initialValues: { name: "", job: "", img: "" },
       onSubmit: async (values, { resetForm }) => {
-         await AddData(values)
-         resetForm()
-         setOpen(false)
+         try {
+            await AddData(values)
+            resetForm()
+            setOpen(false)
+         } catch (error) {
+            console.error(error)
+         }
       },
    })
 
    return (
       <Dialog open={open} onOpenChange={setOpen}>
-         <DialogContent className="bg-slate-900 border border-slate-750 border-slate-700/60 text-white sm:max-w-md shadow-2xl p-6">
-            <form onSubmit={formik.handleSubmit}>
+         <DialogContent aria-describedby={undefined} className="rounded-xl border border-slate-200 bg-white p-6 text-slate-900 shadow-xl sm:max-w-md">
+            <form onSubmit={handleSubmit}>
                <DialogHeader className="mb-4">
-                  <DialogTitle className="text-xl font-semibold text-white">Add User</DialogTitle>
+                  <DialogTitle className="text-xl font-semibold text-slate-900">Add User</DialogTitle>
                </DialogHeader>
 
-               <FieldGroup className="space-y-4">
+               <FieldGroup className="gap-4">
                   <Field>
-                     <Label htmlFor="name" className="text-slate-200">
+                     <Label htmlFor="name" className="text-slate-700">
                         name
                      </Label>
                      <Input
                         id="name"
                         name="name"
                         placeholder=" Name User"
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
+                        value={values.name}
+                        onChange={handleChange}
                      />
                   </Field>
 
                   <Field>
-                     <Label htmlFor="job" className="text-slate-200">
+                     <Label htmlFor="job" className="text-slate-700">
                         Job
                      </Label>
                      <Input
                         id="job"
                         name="job"
                         placeholder=" Job user "
-                        value={formik.values.job}
-                        onChange={formik.handleChange}
+                        value={values.job}
+                        onChange={handleChange}
                      />
                   </Field>
 
                   <Field>
-                     <Label htmlFor="img" className="text-slate-200">
+                     <Label htmlFor="img" className="text-slate-700">
                         img (URL)
                      </Label>
                      <Input
                         id="img"
                         name="img"
                         placeholder=" https://example.com/photo.jpg (url-img)"
-                        value={formik.values.img}
-                        onChange={formik.handleChange}
+                        value={values.img}
+                        onChange={handleChange}
                      />
                   </Field>
                </FieldGroup>
 
-               <DialogFooter className="mt-6 -mx-6 -mb-6 p-4 border-t border-slate-700/60 bg-slate-950/40 flex justify-end gap-3">
+               <DialogFooter className="-mx-6 -mb-6 mt-6 flex justify-end gap-3 rounded-b-xl border-t border-slate-200 bg-slate-50 p-4">
                   <DialogClose
                      render={
                         <Button
                            variant="outline"
                            type="button"
-                           className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white"
+                           className="h-10 border-slate-300 bg-white px-4 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                         >
                            cancel
                         </Button>
@@ -93,7 +96,8 @@ export default function DialogAddFormik({ open, setOpen }: Props) {
                   />
                   <Button
                      type="submit"
-                     className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium shadow-lg shadow-emerald-600/25"
+                     disabled={isSubmitting}
+                     className="h-10 bg-blue-600 px-4 font-medium text-white hover:bg-blue-700"
                   >
                      Add user
                   </Button>
